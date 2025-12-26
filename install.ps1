@@ -27,7 +27,7 @@ $olduserpath = [Environment]::GetEnvironmentVariable("Path", "User")
 
 $existingPaths = @()
 if (-not [string]::IsNullOrEmpty($olduserpath)) {
-    $existingPaths = $olduserpath -split ';'
+    $existingPaths = ($olduserpath -split ';') | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
 }
 
 $pathstoadd = @($installDir)
@@ -48,10 +48,13 @@ if ([string]::IsNullOrEmpty($newuserpath)) {
 }
 
 # Backup existing PATH
-$olduserpath | Out-File (Join-Path $PSScriptRoot "path_backup.txt")
+$olduserpath | Out-File (Join-Path $installDir "path_backup.txt")
 
 
-$confirmation = Read-Host "Do you want to set the new Path as:`n$newuserpath`n(y/n)" -ForegroundColor Yellow
+Write-Host "Do you want to set the new Path as:" -ForegroundColor Yellow
+Write-Host "$newuserpath" -ForegroundColor Cyan
+Write-Host "(y/n): " -ForegroundColor Yellow -NoNewline
+$confirmation = Read-Host
 if ($confirmation -ne "y") {
     Write-Host "Operation cancelled by user." -ForegroundColor Red
     exit 0
