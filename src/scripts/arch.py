@@ -10,7 +10,7 @@ def detect_arch():
         return "amd64"
     if cpu in ("arm64", "aarch64"):
         return "arm64"
-    return ""  # win32
+    return ""  # win32, legacy
 
 def is_windows():
     return os.name == "nt"
