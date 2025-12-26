@@ -25,7 +25,10 @@ try {
 
 # Add to user PATH if not already present
 $userPath = [Environment]::GetEnvironmentVariable("Path", "User")
-if ($userPath -notlike "*$installDir*") {
+$pathEntries = $userPath -split ';'
+$installDirExists = $pathEntries | Where-Object { $_.TrimEnd('\') -eq $installDir.TrimEnd('\') }
+
+if (-not $installDirExists) {
     Write-Host "Adding $installDir to user PATH..." -ForegroundColor Yellow
     [Environment]::SetEnvironmentVariable(
         "Path",
