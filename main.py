@@ -16,14 +16,14 @@ logger = logging.getLogger("pvm")
 def cli():
 
     if not is_windows():
-        logger.info("This tool is only support for windows.")
+        logger.info("This tool is only supported for Windows.")
         return
     
     Store.init_store()
     
     parser = argparse.ArgumentParser(
-        prog="python-version-manager",
-        description="Manage Python versions"
+        prog="pvm",
+        description="A light weight python version manager for Windows."
     )
 
     subparsers = parser.add_subparsers(
