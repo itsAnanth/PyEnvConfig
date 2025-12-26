@@ -85,21 +85,6 @@ wheels = [
 ]
 
 [[package]]
-name = "pyenvconfig"
-version = "0.1.0"
-source = { virtual = "." }
-dependencies = [
-    { name = "pyinstaller" },
-    { name = "requests" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "pyinstaller", specifier = ">=6.17.0" },
-    { name = "requests", specifier = ">=2.32.5" },
-]
-
-[[package]]
 name = "pyinstaller"
 version = "6.17.0"
 source = { registry = "https://pypi.org/simple" }
@@ -138,6 +123,21 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/45/2f/2c68b6722d233dae3e5243751aafc932940b836919cfaca22dd0c60d417c/pyinstaller_hooks_contrib-2025.11.tar.gz", hash = "sha256:dfe18632e06655fa88d218e0d768fd753e1886465c12a6d4bce04f1aaeec917d", size = 169183, upload-time = "2025-12-23T12:59:37.361Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/a7/c4/3a096c6e701832443b957b9dac18a163103360d0c7f5842ca41695371148/pyinstaller_hooks_contrib-2025.11-py3-none-any.whl", hash = "sha256:777e163e2942474aa41a8e6d31ac1635292d63422c3646c176d584d04d971c34", size = 449478, upload-time = "2025-12-23T12:59:35.987Z" },
+]
+
+[[package]]
+name = "python-version-manager"
+version = "0.1.0"
+source = { virtual = "." }
+dependencies = [
+    { name = "pyinstaller" },
+    { name = "requests" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "pyinstaller", specifier = ">=6.17.0" },
+    { name = "requests", specifier = ">=2.32.5" },
 ]
 
 [[package]]
