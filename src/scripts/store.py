@@ -93,7 +93,7 @@ class Store:
         for i, v in enumerate(versions):
             if v["version"] == version:
                 return i, v
-        return None
+        return -1, None
     
     @staticmethod
     def set_version(version_dict: dict):
