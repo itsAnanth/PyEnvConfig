@@ -4,12 +4,11 @@ import logging
 from argparse import _SubParsersAction, ArgumentParser
 
 from src.scripts.store import Store
-from src.scripts.arch import detect_arch, is_windows
 
 logger = logging.getLogger("pvm.link")
 
 def handle_link(args):
-    install_dir = args.dir
+    install_dir = os.path.abspath(args.dir)
 
     pythonexe = os.path.join(install_dir, 'python.exe')
 
