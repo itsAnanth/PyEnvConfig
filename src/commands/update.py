@@ -1,4 +1,3 @@
-import sys
 import os
 import urllib.request
 import json
@@ -51,32 +50,28 @@ def handle_update(args):
         logger.info(f"pvm directory: {install_dir}")
         
         # Check if file exists for update
-        if os.path.exists(exe_path):
-            logger.info("Updating existing PVM installation...")
-        else:
-            logger.info("No existing installation found, downloading fresh copy...")
+        logger.info("Updating existing PVM installation..." if os.path.exists(exe_path) else "No existing installation found, downloading fresh copy...")
         
         # Download the file
         logger.info(f"Downloading pvm.exe from {url}...")
         urllib.request.urlretrieve(url, exe_path)
         
-        # logger.info("PVM updated successfully!")
         print(f"\nUpdate complete! PVM {version} installed at: {exe_path}")
         
     except urllib.error.URLError as e:
         logger.error(f"Failed to download: {e}")
-        print(f"Error: Could not download pvm.exe", file=sys.stderr)
+        print(f"Update failed")
         return
     except Exception as e:
         logger.error(f"Failed to run update: {e}")
-        print(f"Error: {e}", file=sys.stderr)
+        print(f"Update failed")
         return
 
 def update_command(sub_parser: _SubParsersAction[ArgumentParser]):
 
     parser = sub_parser.add_parser(
         'update',
-        help='Update an existing Python installation linked to pvm'
+        help='Update pvm to latest version'
     )
 
     parser.set_defaults(func=handle_update)
