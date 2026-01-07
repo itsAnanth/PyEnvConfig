@@ -45,7 +45,7 @@ def list_command(sub_parser: _SubParsersAction[ArgumentParser]):
     )
 
     parser.add_argument(
-        '--installed',
+        '-i', '--installed',
         action='store_true',
         help='Show only installed versions (default if no flags)'
     )
@@ -57,7 +57,7 @@ def list_command(sub_parser: _SubParsersAction[ArgumentParser]):
     )
 
     parser.add_argument(
-        '--all',
+        '-a', '--all',
         action='store_true',
         help='Show both installed and available versions'
     )
