@@ -1,9 +1,19 @@
 # PVM Installer for Windows
 # Downloads pvm.exe and adds it to user PATH
 
+param(
+    [switch]$Update
+)
+
 $url = "https://github.com/itsAnanth/pvm/releases/download/v1.0.0/pvm.exe"
 $installDir = "$env:LOCALAPPDATA\.pvm"
 $exePath = "$installDir\pvm.exe"
+
+if ($Update -and (Test-Path $exePath)) {
+    Write-Host "Updating existing PVM installation..." -ForegroundColor Cyan
+} elseif (-not $Update) {
+    Write-Host "Fresh installation of PVM..." -ForegroundColor Cyan
+}
 
 Write-Host "Installing PVM (Python Version Manager)..." -ForegroundColor Cyan
 
@@ -51,16 +61,21 @@ if ([string]::IsNullOrEmpty($newuserpath)) {
 $olduserpath | Out-File (Join-Path $installDir "path_backup.txt")
 
 
-Write-Host "Do you want to set the new Path as:" -ForegroundColor Yellow
-Write-Host "$newuserpath" -ForegroundColor Cyan
-Write-Host "(y/n): " -ForegroundColor Yellow -NoNewline
-$confirmation = Read-Host
-if ($confirmation -ne "y") {
-    Write-Host "Operation cancelled by user." -ForegroundColor Red
-    exit 0
-}
+# Write-Host "Do you want to set the new Path as:" -ForegroundColor Yellow
+# Write-Host "$newuserpath" -ForegroundColor Cyan
+# Write-Host "(y/n): " -ForegroundColor Yellow -NoNewline
+# $confirmation = Read-Host
+# if ($confirmation -ne "y") {
+#     Write-Host "Operation cancelled by user." -ForegroundColor Red
+#     exit 0
+# }
 
 [Environment]::SetEnvironmentVariable("Path", $newuserpath, "User")
-Write-Host "PVM installed and added to PATH successfully." -ForegroundColor Green
 
-Write-Host "`nInstallation complete! Run 'pvm' to get started." -ForegroundColor Cyan
+if ($Update) {
+    Write-Host "PVM updated and PATH modified successfully." -ForegroundColor Green
+} else {
+    Write-Host "PVM installed and added to PATH successfully." -ForegroundColor Green
+}
+
+Write-Host "`nInstallation complete! Restart your terminal and run 'pvm' to get started." -ForegroundColor Cyan
