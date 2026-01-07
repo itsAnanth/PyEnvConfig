@@ -14,6 +14,10 @@ jobs:
   build:
     runs-on: windows-latest
 
+    env:
+      # Configure a constant location for the uv cache
+      UV_CACHE_DIR: /tmp/.uv-cache
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
