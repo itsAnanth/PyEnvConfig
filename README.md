@@ -6,7 +6,7 @@ A lightweight Python version manager for Windows. Install, manage, and switch be
 # Installation
 
 ```ps
-powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/itsAnanth/pvm/refs/heads/main/install.ps1 | iex"
+powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/itsAnanth/pvm/refs/heads/main/powershell/install.ps1 | iex"
 ```
 
 This command executes the Install.ps1 script found at the root of the repository
@@ -14,3 +14,10 @@ This command executes the Install.ps1 script found at the root of the repository
 It downloads pvm.exe at `%LOCALAPPDATA%/.pvm and registers it in User Path environment variables
 
 Restart all open terminal sessions and type `pvm` to get started
+
+
+# Updation
+
+```ps
+powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/itsAnanth/pvm/refs/heads/main/powershell/update.ps1 | iex"
+```
