@@ -40,7 +40,6 @@ jobs:
           Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
           ./powershell/build.ps1
 
-
       - name: Create Release
         id: create_release
         uses: softprops/action-gh-release@v2
