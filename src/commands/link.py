@@ -38,7 +38,7 @@ def handle_link(args):
     
 
 
-def link_command(sub_parser: _SubParsersAction[ArgumentParser]):
+def link_command(sub_parser: _SubParsersAction):
 
     parser = sub_parser.add_parser(
         'link',

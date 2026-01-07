@@ -46,7 +46,7 @@ def handle_uninstall(args):
     
 
 
-def uninstall_command(sub_parser: _SubParsersAction[ArgumentParser]):
+def uninstall_command(sub_parser: _SubParsersAction):
 
     parser = sub_parser.add_parser(
         'uninstall',

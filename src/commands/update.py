@@ -52,7 +52,7 @@ def handle_update(args):
         logger.error("Update failed")
         return
 
-def update_command(sub_parser: _SubParsersAction[ArgumentParser]):
+def update_command(sub_parser: _SubParsersAction):
 
     parser = sub_parser.add_parser(
         'update',

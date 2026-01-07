@@ -40,7 +40,7 @@ def handle_list(args):
             marker = "[installed]" if name in installed_versions else ""
             print(f"{name} {marker}")
 
-def list_command(sub_parser: _SubParsersAction[ArgumentParser]):
+def list_command(sub_parser: _SubParsersAction):
 
     parser = sub_parser.add_parser(
         'list',

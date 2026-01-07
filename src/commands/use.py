@@ -34,7 +34,7 @@ def handle_use(args):
 
 
 
-def use_command(sub_parser: _SubParsersAction[ArgumentParser]):
+def use_command(sub_parser: _SubParsersAction):
 
     parser = sub_parser.add_parser(
         'use',

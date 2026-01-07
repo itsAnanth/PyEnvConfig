@@ -84,7 +84,7 @@ def handle_install(args):
     
 
 
-def install_command(sub_parser: _SubParsersAction[ArgumentParser]):
+def install_command(sub_parser: _SubParsersAction):
 
     parser = sub_parser.add_parser(
         'install',
