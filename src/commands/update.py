@@ -1,0 +1,84 @@
+import sys
+import os
+import urllib.request
+import json
+import logging
+from argparse import _SubParsersAction, ArgumentParser
+
+
+logger = logging.getLogger("pvm.update")
+
+def get_latest_release_url(repo_owner, repo_name, asset_name):
+    """Fetch the latest release download URL from GitHub API."""
+    api_url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/releases/latest"
+    
+    try:
+        with urllib.request.urlopen(api_url) as response:
+            data = json.loads(response.read().decode())
+            
+        # Find the asset with the matching name
+        for asset in data.get('assets', []):
+            if asset['name'] == asset_name:
+                return asset['browser_download_url'], data['tag_name']
+        
+        raise ValueError(f"Asset '{asset_name}' not found in latest release")
+    
+    except Exception as e:
+        logger.error(f"Failed to fetch latest release info: {e}")
+        raise
+
+def handle_update(args):
+    logger.info("Updating PVM...")
+    
+    # Define paths
+    if not os.getenv('LOCALAPPDATA'):
+        logger.error("LOCALAPPDATA environment variable not set. Cannot proceed with update.")
+        return
+    
+    install_dir = os.path.join(os.getenv('LOCALAPPDATA'), '.pvm')
+    exe_path = os.path.join(install_dir, 'pvm.exe')
+    
+    try:
+        # Get latest release URL from GitHub API
+        logger.info("Fetching latest release information...")
+        url, version = get_latest_release_url('itsAnanth', 'pvm', 'pvm.exe')
+        logger.info(f"Latest version: {version}")
+        logger.info(f"Download URL: {url}")
+
+        
+        # Create directory if it doesn't exist
+        os.makedirs(install_dir, exist_ok=True)
+        logger.info(f"pvm directory: {install_dir}")
+        
+        # Check if file exists for update
+        if os.path.exists(exe_path):
+            logger.info("Updating existing PVM installation...")
+        else:
+            logger.info("No existing installation found, downloading fresh copy...")
+        
+        # Download the file
+        logger.info(f"Downloading pvm.exe from {url}...")
+        urllib.request.urlretrieve(url, exe_path)
+        
+        # logger.info("PVM updated successfully!")
+        print(f"\nUpdate complete! PVM {version} installed at: {exe_path}")
+        
+    except urllib.error.URLError as e:
+        logger.error(f"Failed to download: {e}")
+        print(f"Error: Could not download pvm.exe", file=sys.stderr)
+        return
+    except Exception as e:
+        logger.error(f"Failed to run update: {e}")
+        print(f"Error: {e}", file=sys.stderr)
+        return
+
+def update_command(sub_parser: _SubParsersAction[ArgumentParser]):
+
+    parser = sub_parser.add_parser(
+        'update',
+        help='Update an existing Python installation linked to pvm'
+    )
+
+    parser.set_defaults(func=handle_update)
+
+    
