@@ -1,14 +1,16 @@
 import os
+import sys
 import urllib.request
 import json
 import logging
+import subprocess
 from argparse import _SubParsersAction, ArgumentParser
 
 from src.utils.version import get_pvm_version
 
 logger = logging.getLogger("pvm.update")
 
-def get_latest_release_url(repo_owner, repo_name, asset_name):
+def get_latest_release(repo_owner, repo_name, asset_name):
     """Fetch the latest release download URL from GitHub API."""
     api_url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/releases/latest"
     
@@ -28,47 +30,26 @@ def get_latest_release_url(repo_owner, repo_name, asset_name):
         raise
 
 def handle_update(args):
-    
-    if not os.getenv('LOCALAPPDATA'):
-        logger.error("LOCALAPPDATA environment variable not set. Cannot proceed with update.")
+
+    if get_pvm_version() == get_latest_release("itsAnanth", "pvm", "pvm.exe")[1]:
+        print("pvm is already up to date.")
         return
     
-    install_dir = os.path.join(os.getenv('LOCALAPPDATA'), '.pvm')
-    exe_path = os.path.join(install_dir, 'pvm.exe')
+    # Run the install script in a new PowerShell window
+    ps_command = 'irm https://raw.githubusercontent.com/itsAnanth/pvm/refs/heads/main/powershell/install.ps1 | iex'
     
     try:
-        # Get latest release URL from GitHub API
-        logger.info("Fetching latest release information...")
-        url, version = get_latest_release_url('itsAnanth', 'pvm', 'pvm.exe')
-
-        if version == get_pvm_version():
-            print(f"You are already using the latest version of PVM. {version}")
-            return
+        subprocess.Popen(
+            ['powershell', '-NoExit', '-ExecutionPolicy', 'ByPass', '-Command', ps_command],
+            creationflags=subprocess.CREATE_NEW_CONSOLE if sys.platform == 'win32' else 0
+        )
         
-        logger.info(f"Latest version: {version}")
-        logger.info(f"Download URL: {url}")
-
+        logger.info("Update process started in a new terminal window.")
+        logger.info("Please check the terminal window for update progress.")
         
-        # Create directory if it doesn't exist
-        os.makedirs(install_dir, exist_ok=True)
-        logger.info(f"pvm directory: {install_dir}")
-        
-        # Check if file exists for update
-        logger.info("Updating existing PVM installation..." if os.path.exists(exe_path) else "No existing installation found, downloading fresh copy...")
-        
-        # Download the file
-        logger.info(f"Downloading pvm.exe from {url}...")
-        urllib.request.urlretrieve(url, exe_path)
-        
-        print(f"\nUpdate complete! PVM {version} installed at: {exe_path}")
-        
-    except urllib.error.URLError as e:
-        logger.error(f"Failed to download: {e}")
-        print(f"Update failed")
-        return
     except Exception as e:
-        logger.error(f"Failed to run update: {e}")
-        print(f"Update failed")
+        logger.error(f"Failed to start update: {e}")
+        logger.error("Update failed")
         return
 
 def update_command(sub_parser: _SubParsersAction[ArgumentParser]):
