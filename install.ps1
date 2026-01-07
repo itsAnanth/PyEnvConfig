@@ -15,8 +15,6 @@ if ($Update -and (Test-Path $exePath)) {
     Write-Host "Fresh installation of PVM..." -ForegroundColor Cyan
 }
 
-Write-Host "Installing PVM (Python Version Manager)..." -ForegroundColor Cyan
-
 # Create installation directory
 if (-not (Test-Path $installDir)) {
     New-Item -ItemType Directory -Path $installDir -Force | Out-Null
