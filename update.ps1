@@ -1,1 +1,0 @@
-powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/itsAnanth/pvm/refs/heads/main/install.ps1 -Update | iex"
