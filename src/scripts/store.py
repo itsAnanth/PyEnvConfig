@@ -3,17 +3,23 @@ import json
 import logging
 
 from src.utils.registry import get_user_path, set_user_path
+from src.scripts.shims import generate_shims
 
 logger = logging.getLogger("pvm.store")
 
 PVM_ROOT = os.path.join(os.environ['LOCALAPPDATA'], '.pvm')
 VERSIONS_FILE = os.path.join(PVM_ROOT, 'versions.json')
+INIT_MARKER = os.path.join(PVM_ROOT, '.initialized')
 SHIMS_DIR = os.path.join(PVM_ROOT, 'shims')
 
 class Store:
 
+    def is_initialized() -> bool:
+        return os.path.exists(INIT_MARKER)
+
     @staticmethod
     def init_store():
+        
         if not os.path.isdir(PVM_ROOT):
             os.makedirs(PVM_ROOT, exist_ok=True)
             logger.debug(f"Initialized store at {PVM_ROOT}")
@@ -25,6 +31,18 @@ class Store:
         if not os.path.isdir(SHIMS_DIR):
             os.makedirs(SHIMS_DIR, exist_ok=True)
             logger.debug(f"Created shims directory at {SHIMS_DIR}")
+
+            # if shims was accidentally deleted and user is using a version, regenerate shims
+            versions = Store.get_versions()
+            for version in versions:
+                if version.get("using", False):
+                    if generate_shims(version):
+                        logger.debug(f"Regenerated shims for version {version['version']}")
+
+        # Check if already initialized
+        if Store.is_initialized():
+            logger.debug("PVM store already initialized")
+            return
 
         # add shims to user path if not already present
         user_path = get_user_path()
@@ -41,12 +59,17 @@ class Store:
             except Exception as e:
                 logger.error(f"Unexpected error updating PATH: {e}")
                 raise
+        
+        # Mark as initialized
+        with open(INIT_MARKER, 'w') as f:
+            f.write('')
+        logger.debug("PVM initialization complete")
             
 
 
     @staticmethod
     def get_pvm_root() -> str:
-        return PVM_ROOT
+        return os.path.join(os.environ['LOCALAPPDATA'], '.pvm')
     
     
     @staticmethod
