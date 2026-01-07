@@ -8,6 +8,3 @@ dependencies = [
     "pyinstaller>=6.17.0",
     "requests>=2.32.5",
 ]
-
-[tool.uv]
-cache-dir = "E:/tools/uv/.cache"
