@@ -51,13 +51,15 @@ if (-not [string]::IsNullOrEmpty($olduserpath)) {
 
 $pathstoadd = @($installDir)
 
-$newPaths = @($existingPaths)
+$newPaths = @()
 
 foreach ($pathtoadd in $pathstoadd) {
-    if (-not ($newPaths | Where-Object { $_.TrimEnd('\') -ieq $pathtoadd.TrimEnd('\') })) {
+    if (-not ($existingPaths | Where-Object { $_.TrimEnd('\') -ieq $pathtoadd.TrimEnd('\') })) {
         $newPaths += $pathtoadd
     }
 }
+
+$newPaths += $existingPaths
 
 $newuserpath = ($newPaths -join ';')
 
