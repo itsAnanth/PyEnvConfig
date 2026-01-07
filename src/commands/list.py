@@ -6,8 +6,6 @@ from argparse import _SubParsersAction, ArgumentParser
 
 logger = logging.getLogger("pvm.list")
 
-def selection():
-    pass
 
 def handle_list(args):
     # Show installed versions
