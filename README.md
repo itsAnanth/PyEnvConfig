@@ -5,8 +5,9 @@ A lightweight Python version manager for Windows. Install, manage, and switch be
 
 # Installation
 
-> [!IMPORTANT]
-> If you already have a generic python installation, remove it from User path variables
+> [!NOTE]
+> If you already have a generic python installation, pvm will take priority over the existing installation
+> Since using `pvm use <version>` will add `.pvm/shims/python` and `.pvm/shims/pip` to path as first and second entry. This will override the other `python.exe` and `pip.exe` in path if any because of the way windows path resolution works
 
 
 ```ps
