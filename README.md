@@ -24,5 +24,7 @@ Restart all open terminal sessions and type `pvm` to get started
 # Updation
 
 ```ps
-powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/itsAnanth/pvm/refs/heads/main/powershell/update.ps1 | iex"
+pvm update
 ```
+
+This command will fetch the latest release of `pvm` and overwrite the older installation
