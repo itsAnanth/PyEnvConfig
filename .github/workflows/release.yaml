@@ -1,3 +1,4 @@
+# build and releases binaries for pvm when a new tag is pushed
 name: Build & Release
 
 on:
