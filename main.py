@@ -1,6 +1,7 @@
 import argparse
 import logging
 import os
+from src.utils.version import get_pvm_version
 from src.scripts.store import Store
 from src.scripts.arch import is_windows
 from src.commands.list import list_command
@@ -13,10 +14,8 @@ from src.commands.update import update_command
 # Use DEBUG in development, INFO in production builds
 log_level = logging.DEBUG if os.getenv('PVM_DEV') == '1' else logging.INFO
 
-try:
-    from src._version import VERSION
-except ImportError:
-    VERSION = "dev"
+
+VERSION = get_pvm_version()
 
 logging.basicConfig(
     level=log_level,
