@@ -25,7 +25,7 @@ def handle_install(args):
     
     # Use zip
     installer_name = f"python-{version}-{arch}.zip"
-    url = f"https://www.python.org/ftp/python/{version}/{installer_name}"
+    url = f"https://python.org/ftp/python/{version}/{installer_name}"
 
     if os.path.isdir(install_dir):
         if str(input(f"[WARNING] Directory {install_dir} already exists. Overwrite? (y/n): ")).lower() not in ['y', 'yes']:
