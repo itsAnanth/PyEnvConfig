@@ -1,5 +1,5 @@
 import logging
-from src.scripts.get_versions import get_python_versions
+from src.scripts.get_versions import get_python_github_versions
 from src.scripts.store import Store
 from argparse import _SubParsersAction, ArgumentParser
 
@@ -25,18 +25,17 @@ def handle_list(args):
     
     if args.available or args.all or args.latest:
         logger.info("Fetching available Python versions from python.org...")
-        versions = get_python_versions()
+        versions = get_python_github_versions()
         print("\nAvailable versions:")
         
         if args.latest:
-            versions = [v for v in versions if v['is_latest']]
+            versions = versions[len(versions) - 1]
         
         installed_versions = {v['version'] for v in installed}
         
         for v in versions:
-            name = v['name'].split(' ')[1]
-            marker = "[installed]" if name in installed_versions else ""
-            print(f"{name} {marker}")
+            marker = "[installed]" if v['version'] in installed_versions else ""
+            print(f"{v['version']} {marker}")
 
 def list_command(sub_parser: _SubParsersAction):
 
